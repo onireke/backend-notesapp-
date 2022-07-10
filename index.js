@@ -33,13 +33,14 @@ app.get("/", (request, response) => {
 // });
 
 app.get("/api/notes/:id", (request, response) => {
-  const id = request.params.id;
-  const note = notes.find((note) => {
-    console.log(note.id, typeof note.id, id, typeof id, note.id === id);
-    return note.id === id;
-  });
-  console.log(note);
-  response.json(note);
+  const id = Number(request.params.id);
+  const note = notes.find((note) => note.id === id);
+
+  if (note) {
+    response.json();
+  } else {
+    response.status(404).end();
+  }
 });
 
 const PORT = 3001;

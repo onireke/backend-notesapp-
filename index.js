@@ -26,7 +26,7 @@ const app = http.createServer((request, response) => {
   response.end(JSON.stringify(notes));
 });
 
-const PORT = 30001;
+const PORT = 3001;
 
 app.listen(PORT);
 

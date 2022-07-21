@@ -1,8 +1,23 @@
 const express = require("express");
 const app = express();
+const mongoose = require("mongoose");
 const cors = require("cors");
 app.use(cors());
 app.use(express.json());
+app.use(express.static("build"));
+
+// DO NOT SAVE YOUR PASSWORD TO GITHUB!!
+const url = `mongodb+srv://fullstack:<password>@cluster0.o1opl.mongodb.net/noteApp?retryWrites=true&w=majority`;
+
+mongoose.connect(url);
+
+const noteSchema = new mongoose.Schema({
+  content: String,
+  date: Date,
+  important: Boolean,
+});
+
+const Note = mongoose.model("Note", noteSchema);
 
 let notes = [
   {
@@ -28,8 +43,14 @@ app.get("/", (request, response) => {
   response.send("<h1>Hello World!</h1>");
 });
 
+// app.get("/api/notes", (request, response) => {
+//   response.json(notes);
+// });
+
 app.get("/api/notes", (request, response) => {
-  response.json(notes);
+  Note.find({}).then((notes) => {
+    response.json(notes);
+  });
 });
 
 app.get("/api/notes/:id", (request, response) => {
